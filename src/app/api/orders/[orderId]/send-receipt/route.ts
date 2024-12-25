@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { PutObjectCommand, S3Client, StorageClass } from "@aws-sdk/client-s3";
 import { database } from "@database";
 import { StatusCodes } from "http-status-codes";
 import { type NextRequest, NextResponse } from "next/server";
@@ -36,6 +36,7 @@ export async function POST(req: NextRequest, { params }: DynamicSegments<Params>
 				Key,
 				Body: Buffer.from(await receipt.arrayBuffer()),
 				ContentType,
+				StorageClass: StorageClass.GLACIER_IR,
 			}),
 		),
 		database
