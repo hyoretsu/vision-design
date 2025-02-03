@@ -30,6 +30,7 @@ export interface ShirtOrder extends DefaultFields {
 	clientId: string;
 	shirtId: string;
 	size: string;
+	babyLook: number | null;
 	color: string;
 	downPayment: number;
 	finalPayment: number | null;

@@ -16,7 +16,7 @@ import { parseAsString, useQueryStates } from "nuqs";
 export function ClientModal({ isOpen, onOpenChange }: ModalProps) {
 	const { client: storedClient, setClient } = useAppStore(state => state);
 
-	const [{ cor: color, modelo: modelId, tamanho: size }, setParams] = useQueryStates({
+	const [{ baby_look: babyLook, cor: color, modelo: modelId, tamanho: size }, setParams] = useQueryStates({
 		baby_look: parseAsString,
 		cor: parseAsString,
 		modelo: parseAsString,
@@ -37,6 +37,7 @@ export function ClientModal({ isOpen, onOpenChange }: ModalProps) {
 						setClient(client);
 
 						const pedido = await useApi<string>("POST", "/orders", {
+							babyLook,
 							client,
 							color,
 							modelId,
