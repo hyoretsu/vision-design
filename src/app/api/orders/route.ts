@@ -26,7 +26,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-	const { client: clientData, color, modelId: shirtId, payment, size } = await req.json();
+	const { babyLook, client: clientData, color, modelId: shirtId, payment, size } = await req.json();
 
 	const shirt = await database.selectFrom("Shirt").where("id", "=", shirtId).execute();
 	if (!shirt) {
@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
 	const order = await database
 		.insertInto("ShirtOrder")
 		.values({
+			babyLook,
 			color,
 			downPayment: payment,
 			clientId: client!.id,
