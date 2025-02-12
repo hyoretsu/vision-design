@@ -43,7 +43,7 @@ export function ClientModal({ isOpen, onOpenChange }: ModalProps) {
 						setClient(client);
 
 						const pedido = await useApi<string>("POST", "/orders", {
-							babyLook,
+							babyLook: babyLook === "Sim",
 							client,
 							color,
 							modelId,
