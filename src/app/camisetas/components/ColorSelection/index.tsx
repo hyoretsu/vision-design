@@ -7,17 +7,24 @@ export interface ColorSelectionProps {
 	models: ShirtListing;
 }
 
-const hexCodes = new Map<string, string>([
-	["azul", "#7ed1ef"],
-	["azul escuro", "#17519b"],
-	["branco", "#ffffff"],
-	["laranja", "#ffc300"],
-	["preto", "#434343cc"],
-	["rosa", "#ff69b4"],
-	["roxo", "#9703d188"],
-	["verde", "#32cd32"],
-	["vinho", "#730303"],
-]);
+const hexCodes = {
+	accent: new Map<string, string>([
+		["azul", "#7ed1ef"],
+		["laranja", "#ffc300"],
+		["rosa", "#ff69b4"],
+		["verde", "#32cd32"],
+	]),
+	main: new Map<string, string>([
+		["azul", "#1b2b8a"],
+		["azul escuro", "#17519b"],
+		["branco", "#ffffff"],
+		["cinza", "#b1b1b1"],
+		["preto", "#434343cc"],
+		["roxo", "#9703d188"],
+		["verde", "#1e3e25"],
+		["vinho", "#730303"],
+	]),
+};
 
 export function ColorSelection({ models }: ColorSelectionProps) {
 	const [selectedModel] = useQueryState("modelo", parseAsString.withDefault(Object.keys(models)[0]));
@@ -43,7 +50,17 @@ export function ColorSelection({ models }: ColorSelectionProps) {
 			tooltips={colors}
 			columns={6}
 			text={false}
-			backgrounds={colors.map(color => color.split(" e ").map(color => hexCodes.get(color.toLowerCase())!))}
+			backgrounds={colors.map(color =>
+				color.split(" e ").map((color, i) => {
+					const lowercaseColor = color.toLowerCase();
+
+					if (i === 1) {
+						return (hexCodes.accent.get(lowercaseColor) ?? hexCodes.main.get(lowercaseColor))!;
+					}
+
+					return hexCodes.main.get(lowercaseColor)!;
+				}),
+			)}
 			state={[current, setColor]}
 		/>
 	);
