@@ -19,6 +19,7 @@ export async function GET(req: NextRequest) {
 		.selectFrom("Shirt as s")
 		.select(["s.id", "s.colors", "s.model", "s.photos", "s.prices"])
 		.leftJoin("ShirtOrder as so", "so.shirtId", "s.id")
+		.groupBy(["s.id"])
 		.orderBy(eb => eb.cast("s.createdAt", "date"), "desc")
 		.orderBy(eb => eb.fn.count("so.id"), "desc")
 		.orderBy("s.model", "asc")
