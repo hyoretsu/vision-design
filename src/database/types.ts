@@ -1,51 +1,64 @@
-import type { ColumnType, Generated } from "kysely";
-
+import type { ColumnType } from "kysely";
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
+	? ColumnType<S, I | undefined, U>
+	: ColumnType<T, T | undefined, T>;
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-interface DefaultFields {
-	id: Generated<string>;
-	createdAt: ColumnType<Date, string | undefined, never>;
-	updatedAt: ColumnType<Date, string | undefined, never>;
-}
-
-export interface Client extends DefaultFields {
+export const ShirtSize = {
+	P: "P",
+	M: "M",
+	G: "G",
+	GG: "GG",
+	XGG: "XGG",
+} as const;
+export type ShirtSize = (typeof ShirtSize)[keyof typeof ShirtSize];
+export type Client = {
+	id: string;
 	name: string;
 	email: string;
 	phoneNumber: string;
-}
-
-export interface LegalTerms extends DefaultFields {
+	createdAt: Generated<Timestamp>;
+	updatedAt: Generated<Timestamp>;
+};
+export type LegalTerms = {
+	id: string;
 	text: string;
-}
-
-export interface Shirt extends DefaultFields {
+	createdAt: Generated<Timestamp>;
+	updatedAt: Generated<Timestamp>;
+};
+export type Shirt = {
+	id: string;
 	model: string;
 	manufacturingPrice: number;
 	prices: number[];
 	photos: string[];
 	colors: string[];
-}
-
-export interface ShirtOrder extends DefaultFields {
+	createdAt: Generated<Timestamp>;
+	updatedAt: Generated<Timestamp>;
+};
+export type ShirtOrder = {
+	id: string;
 	clientId: string;
 	shirtId: string;
-	size: string;
-	babyLook: number | null;
 	color: string;
-	downPayment: number;
+	size: Generated<ShirtSize>;
+	babyLook: Generated<boolean>;
+	quantity: Generated<number>;
+	downPayment: Generated<number>;
 	finalPayment: number | null;
-	termAccepted?: string;
-	payments: boolean[] | null;
-	cancelledAt: Timestamp | null;
+	payments: boolean[];
+	termAccepted: string | null;
+	orderedAt: Timestamp | null;
 	deliveredTo: string | null;
 	deliveredAt: Timestamp | null;
 	expiredAt: Timestamp | null;
-	quantity: number;
-}
-
-export interface DB {
+	cancelledAt: Timestamp | null;
+	createdAt: Generated<Timestamp>;
+	updatedAt: Generated<Timestamp>;
+};
+export type DB = {
 	Client: Client;
 	LegalTerms: LegalTerms;
 	Shirt: Shirt;
 	ShirtOrder: ShirtOrder;
-}
+};

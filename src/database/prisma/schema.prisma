@@ -1,0 +1,78 @@
+generator kysely {
+    provider            = "prisma-kysely"
+    previewFeatures     = ["metrics", "nativeDistinct", "postgresqlExtensions", "prismaSchemaFolder", "relationJoins", "strictUndefinedChecks", "views"]
+    output              = "../"
+    fileName            = "types.ts"
+    decimalTypeOverride = "number"
+    jsonTypeOverride    = "Record<string,any>"
+}
+
+datasource db {
+    provider   = "postgresql"
+    url        = env("DATABASE_URL")
+    extensions = []
+}
+
+enum ShirtSize {
+    P
+    M
+    G
+    GG
+    XGG
+}
+
+model Client {
+    id          String       @id @default(cuid(2)) @db.VarChar(24)
+    name        String       @db.VarChar(50)
+    email       String       @db.VarChar(320)
+    phoneNumber String       @db.VarChar(15)
+    orders      ShirtOrder[]
+    createdAt   DateTime     @default(now()) @db.Timestamp(0)
+    updatedAt   DateTime     @default(now()) @db.Timestamp(0)
+}
+
+model LegalTerms {
+    id        String       @id @default(cuid(2)) @db.VarChar(24)
+    text      String
+    terms     ShirtOrder[]
+    createdAt DateTime     @default(now()) @db.Timestamp(0)
+    updatedAt DateTime     @default(now()) @db.Timestamp(0)
+}
+
+model Shirt {
+    id                 String       @id @default(cuid(2)) @db.VarChar(24)
+    model              String       @db.VarChar(50)
+    manufacturingPrice Decimal      @db.Decimal(4, 2)
+    prices             Decimal[]    @db.Decimal(4, 2)
+    photos             String[]     @db.VarChar(100)
+    colors             String[]     @db.VarChar(32)
+    orders             ShirtOrder[]
+    createdAt          DateTime     @default(now()) @db.Timestamp(0)
+    updatedAt          DateTime     @default(now()) @db.Timestamp(0)
+}
+
+model ShirtOrder {
+    id           String      @id @default(cuid(2)) @db.VarChar(24)
+    clientId     String
+    client       Client      @relation(fields: [clientId], references: [id])
+    // Versão da camisa
+    shirtId      String
+    shirt        Shirt       @relation(fields: [shirtId], references: [id])
+    color        String      @db.VarChar(15)
+    size         ShirtSize   @default(G)
+    babyLook     Boolean     @default(false)
+    quantity     Int         @default(1) @db.SmallInt
+    // Pagamento único
+    downPayment  Decimal     @default(51.99) @db.Decimal(4, 2)
+    finalPayment Decimal?    @db.Decimal(4, 2)
+    payments     Boolean[]
+    termAccepted String?
+    terms        LegalTerms? @relation(fields: [termAccepted], references: [id])
+    orderedAt    DateTime?   @db.Date
+    deliveredTo  String?     @db.VarChar(50)
+    deliveredAt  DateTime?   @db.Timestamp(0)
+    expiredAt    DateTime?   @db.Date
+    cancelledAt  DateTime?   @db.Date
+    createdAt    DateTime    @default(now()) @db.Timestamp(0)
+    updatedAt    DateTime    @default(now()) @db.Timestamp(0)
+}
