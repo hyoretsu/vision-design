@@ -50,7 +50,7 @@ export function PaymentModal({ isOpen, onClose, onOpenChange }: ModalProps) {
 
 		setOrderStatus("successo");
 		setTermsAccepted(null);
-		onClose();
+		onClose?.();
 	};
 
 	return (

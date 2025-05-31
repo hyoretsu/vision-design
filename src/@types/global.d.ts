@@ -3,7 +3,7 @@ type ValuesOf<T extends any[]> = T[number];
 
 interface ModalProps {
 	isOpen: boolean;
-	onClose: () => void;
+	onClose?: () => void;
 	onOpenChange: () => void;
 }
 

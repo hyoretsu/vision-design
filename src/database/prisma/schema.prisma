@@ -1,10 +1,6 @@
-generator kysely {
-    provider            = "prisma-kysely"
-    previewFeatures     = ["metrics", "nativeDistinct", "postgresqlExtensions", "prismaSchemaFolder", "relationJoins", "strictUndefinedChecks", "views"]
-    output              = "../"
-    fileName            = "types.ts"
-    decimalTypeOverride = "number"
-    jsonTypeOverride    = "Record<string,any>"
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["metrics", "nativeDistinct", "postgresqlExtensions", "relationJoins", "strictUndefinedChecks", "views"]
 }
 
 datasource db {

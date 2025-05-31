@@ -1,6 +1,6 @@
 "use client";
 import { type AppStore, createAppStore } from "@lib/storage";
-import { createContext, useRef, useContext, type PropsWithChildren } from "react";
+import { type PropsWithChildren, createContext, useContext, useRef } from "react";
 import { useStore } from "zustand";
 
 export type AppStoreApi = ReturnType<typeof createAppStore>;
@@ -8,7 +8,7 @@ export type AppStoreApi = ReturnType<typeof createAppStore>;
 export const AppStoreContext = createContext<AppStoreApi | undefined>(undefined);
 
 export const AppStoreProvider = ({ children }: PropsWithChildren) => {
-	const storeRef = useRef<AppStoreApi>();
+	const storeRef = useRef<AppStoreApi>(null);
 
 	if (!storeRef.current) {
 		storeRef.current = createAppStore();

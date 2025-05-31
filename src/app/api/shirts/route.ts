@@ -1,4 +1,4 @@
-import { database } from "@database";
+import { type Shirt, database } from "@database";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
 
 	return NextResponse.json(
 		shirts.reduce<ShirtListing>((obj, { id, ...shirt }) => {
-			obj[id] = shirt;
+			obj[id] = shirt as Shirt;
 
 			return obj;
 		}, {}),

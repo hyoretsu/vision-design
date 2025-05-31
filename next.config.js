@@ -6,16 +6,6 @@ module.exports = async (phase, { defaultConfig }) => {
 		eslint: {
 			ignoreDuringBuilds: true,
 		},
-		experimental: {
-			turbo: {
-				rules: {
-					"*.svg": {
-						loaders: ["@svgr/webpack"],
-						as: "*.js",
-					},
-				},
-			},
-		},
 		images: {
 			remotePatterns: [{ hostname: "*" }],
 		},
@@ -29,8 +19,13 @@ module.exports = async (phase, { defaultConfig }) => {
 			},
 		},
 		skipTrailingSlashRedirect: true,
-		typescript: {
-			ignoreBuildErrors: true,
+		turbopack: {
+			rules: {
+				"*.svg": {
+					loaders: ["@svgr/webpack"],
+					as: "*.js",
+				},
+			},
 		},
 		webpack: (config, options) => {
 			config.module.rules.push({

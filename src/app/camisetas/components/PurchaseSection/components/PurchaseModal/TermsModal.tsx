@@ -37,7 +37,7 @@ export function TermsModal({ isOpen, onClose, onOpenChange }: ModalProps) {
 			if (acceptance) {
 				setTermsAccepted("Sim");
 			} else {
-				onClose();
+				onClose?.();
 			}
 		} catch {}
 	};
